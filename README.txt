@@ -6,6 +6,9 @@ cd ~/Applications/
 curl https://github.com/mozilla/geckodriver/releases/download/v0.26.0/geckodriver-v0.26.0-macos.tar.gz
 gives redirect, so use -L flag.
 
+alternatevly, use macports:
+port search geckodriver
+port install geckodriver
 
 set up python virtualenv using virtalenvwrapper:
 cd projects/learning/tdd_python
