@@ -18,3 +18,106 @@ workon tdd
 pip install "django<1.12" "selenium<4"
 deactivate
 
+-------------
+
+Chapter 1:
+https://www.obeythetestinggoat.com/book/chapter_01.html
+
+- first step is always write a test
+- will use Selenium to check that djanogo is installed and dev server works
+(uses Geckodriver - https://www.obeythetestinggoat.com/book/pre-requisite-installations.html#firefox_gecko)
+
+- create functional_tests.py using webdriver from selenium
+start with assertion that Django is in browser.title
+
+- create django project:
+django-admin.py startproject superlists .
+
+- run django dev server:
+python manage.py runserver
+
+- run test using selenium against running dev server:
+python functional_tests.py
+
+- for book, working dir is always one that has manage.py
+
+- add to .gitignore db.sqlite3, geckodriver.log, virtualenv, __pycache__, *.pyc
+
+----------
+
+Chapter 2:
+https://www.obeythetestinggoat.com/book/chapter_02_unittest.html
+
+- functional tests (with selenium) gives specification for app (user story)
+(side note: behavioral testing with python behave library)
+
+- FTs should have human-readable story we can follow (explicit in comments)
+
+- python's unittest module helps make test failing messages better
+-- tests are organized into classes that inherit from unittest.TestCase (e.g. class Foo(unittest.TestCase):)
+-- any method whose name starts with test is a test method and will be run
+-- use setUp and tearDown methods to do things before and after each test
+-- unittest documentation here: https://docs.python.org/3/library/unittest.html
+
+
+-----------
+
+Chapter 3:
+https://www.obeythetestinggoat.com/book/chapter_unit_test_first_view.html
+
+- django is organized in apps. Start an app like this:
+python manage.py startapp lists
+
+- intro unit tests. Unit tests test aplication "from the inside" - dev prospective, vs. functional tests "from the outside" - user perspective
+
+Workflow:
+- functional test
+- one or more unit tests
+- write smallest amount of application code to get unit test to pass
+- return to functional test
+
+unit testing at lists/test.py
+
+- make failing test to ensure unit tests are running
+- run with: python manage.py test
+
+Django workflow:
+1) get HTTP request for URL
+2) dispatch to view function (resolve URL)
+3) view function processes request and returns response
+
+so, to test:
+1) can we resolve root URL for site to a particular view function we've made?
+2) can we make this view return some HTML to pass functional test?
+
+-> work on lists/test.py to change test.
+
+- with a failing functional test and a failing unit test, we can write some
+application code.
+
+
+----------
+Chapter 4:
+https://www.obeythetestinggoat.com/book/chapter_philosophy_and_refactoring.html
+
+rerun final test:
+workon tdd
+python manage.py runserver
+python functional_tests.py
+
+have to register apps with Django - add it to settings.py in INSTALLED_APPS variable
+
+processing user's form submission is next chapter (I think my code is up to there, so while overlooking shitty notes I have here for chapter 4, that gets me back to where I was!)
+
+"think of functional test as being a high-level view of the cycle, where "writing the code" to get the functional tests to pass actually involves using another, smaller TDD cycle whic huses unit tests."
+
+-----------
+Chapter 5:
+https://www.obeythetestinggoat.com/book/chapter_post_and_database.html
+
+Django’s CSRF protection involves placing a little auto-generated token into each generated form, to be able to identify POST requests as having come from the original site. To add the CSRF token we use a template tag, which has the curly-bracket/percent syntax, {% ... %}
+
+(in lists/templates/home.html)
+
+processing POST request on server:
+
